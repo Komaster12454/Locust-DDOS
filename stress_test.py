@@ -1,6 +1,3 @@
-from gevent import monkey
-monkey.patch_all()
-
 import uuid
 import random
 from locust import User, task, between, events
@@ -50,12 +47,16 @@ class DirectUser(User):
             "ip:192.168.0.1",
         ])
         data = q.encode('utf-8')
-        address = ('104.29.159.106', "19327")  # Replace with your target host and port
+        target_host = 'target_host'  # Replace with your target host
+        target_port = 12345  # Replace with your target port
+        address = (target_host, target_port)
         self.client.sendto(data, address)
 
     @task(3)
     def heavy_api(self):
         payload = {"data": "x" * random.randint(1000, 10000)}
         data = str(payload).encode('utf-8')
-        address = ('target_host', target_port)  # Replace with your target host and port
+        target_host = '104.29.159.106'  # Replace with your target host
+        target_port = 19327  # Replace with your target port
+        address = (target_host, target_port)
         self.client.sendto(data, address)
