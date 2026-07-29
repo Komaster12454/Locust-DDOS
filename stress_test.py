@@ -17,7 +17,7 @@ class UdpSocketClient(socket.socket):
         try:
             super(UdpSocketClient, self).sendto(data, address)
             total_time = int((time.time() - start_time) * 1000)
-            events.request_success.fire(request_type="udpsocket", name="sendto", response_time=total_time, response_length=0)
+            events.request.fire(request_type="udpsocket", name="sendto", response_time=total_time, response_length=0, exception=None)
         except Exception as e:
             total_time = int((time.time() - start_time) * 1000)
             events.request.fire(request_type="udpsocket", name="sendto", response_time=total_time, exception=e, response_length=0)
@@ -28,7 +28,7 @@ class UdpSocketClient(socket.socket):
         try:
             recv_data, address = super(UdpSocketClient, self).recvfrom(bufsize)
             total_time = int((time.time() - start_time) * 1000)
-            events.request_success.fire(request_type="udpsocket", name="recvfrom", response_time=total_time, response_length=0)
+            events.request.fire(request_type="udpsocket", name="recvfrom", response_time=total_time, response_length=0, exception=None)
         except Exception as e:
             total_time = int((time.time() - start_time) * 1000)
             events.request.fire(request_type="udpsocket", name="recvfrom", response_time=total_time, exception=e, response_length=0)
