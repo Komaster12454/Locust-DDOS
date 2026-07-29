@@ -50,8 +50,8 @@ class DirectUser(User):
             "ip:192.168.0.1",
         ])
         data = q.encode('utf-8')
-        target_host = '104.29.159.106'  # Replace with your target host
-        target_port = 19327  # Replace with your target port
+        target_host = '104.29.154.29'  # Replace with your target host
+        target_port = 19325  # Replace with your target port
         address = (socket.gethostbyname(target_host), target_port)
         self.client.sendto(data, address)
 
