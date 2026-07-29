@@ -50,7 +50,7 @@ class DirectUser(User):
             "ip:192.168.0.1",
         ])
         data = q.encode('utf-8')
-        address = ('target_host', target_port)  # Replace with your target host and port
+        address = ('104.29.159.106', "19327")  # Replace with your target host and port
         self.client.sendto(data, address)
 
     @task(3)
