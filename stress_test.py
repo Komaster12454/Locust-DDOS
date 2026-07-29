@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 import uuid
 import random
 from locust import User, task, between, events
@@ -17,7 +20,7 @@ class UdpSocketClient(socket.socket):
             events.request_success.fire(request_type="udpsocket", name="sendto", response_time=total_time, response_length=0)
         except Exception as e:
             total_time = int((time.time() - start_time) * 1000)
-            events.request_failure.fire(request_type="udpsocket", name="sendto", response_time=total_time, exception=e)
+            events.request.fire(request_type="udpsocket", name="sendto", response_time=total_time, exception=e, response_length=0)
 
     def recvfrom(self, bufsize):
         recv_data = b''
@@ -28,7 +31,7 @@ class UdpSocketClient(socket.socket):
             events.request_success.fire(request_type="udpsocket", name="recvfrom", response_time=total_time, response_length=0)
         except Exception as e:
             total_time = int((time.time() - start_time) * 1000)
-            events.request_failure.fire(request_type="udpsocket", name="recvfrom", response_time=total_time, exception=e)
+            events.request.fire(request_type="udpsocket", name="recvfrom", response_time=total_time, exception=e, response_length=0)
         return recv_data, address
 
 class DirectUser(User):
@@ -47,9 +50,9 @@ class DirectUser(User):
             "ip:192.168.0.1",
         ])
         data = q.encode('utf-8')
-        target_host = 'target_host'  # Replace with your target host
-        target_port = 12345  # Replace with your target port
-        address = (target_host, target_port)
+        target_host = '104.29.159.106'  # Replace with your target host
+        target_port = 19327  # Replace with your target port
+        address = (socket.gethostbyname(target_host), target_port)
         self.client.sendto(data, address)
 
     @task(3)
@@ -58,5 +61,5 @@ class DirectUser(User):
         data = str(payload).encode('utf-8')
         target_host = '104.29.159.106'  # Replace with your target host
         target_port = 19327  # Replace with your target port
-        address = (target_host, target_port)
+        address = (socket.gethostbyname(target_host), target_port)
         self.client.sendto(data, address)
